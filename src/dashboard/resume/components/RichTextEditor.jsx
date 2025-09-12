@@ -5,26 +5,57 @@ import React, { useContext, useState } from 'react'
 import { BtnBold, BtnBulletList, BtnClearFormatting, BtnItalic, BtnLink, BtnNumberedList, BtnStrikeThrough, BtnStyles, BtnUnderline, Editor, EditorProvider, HtmlButton, Separator, Toolbar } from 'react-simple-wysiwyg'
 import { AIChatSession } from './../../../../service/AIModal';
 import { toast } from 'sonner';
-const PROMPT='position titile: {positionTitle} , Depends on position title give me 5-7 bullet points for my experience in resume (Please do not add experince level and No JSON array) , give me result in HTML tags'
+const PROMPT='Position title: {positionTitle}. Based on this title, write 5 resume bullet points as HTML only. Return a single <ul> with <li> items, no markdown, no JSON, no explanations.'
 function RichTextEditor({onRichTextEditorChange,index,defaultValue}) {
-    const [value,setValue]=useState(defaultValue);
+    const [value,setValue]=useState(defaultValue || '');
     const {resumeInfo,setResumeInfo}=useContext(ResumeInfoContext)
     const [loading,setLoading]=useState(false);
+    const toHtmlList = (items) => {
+      if (!Array.isArray(items)) return '';
+      const listItems = items
+        .filter((t) => typeof t === 'string' && t.trim().length > 0)
+        .map((t) => `<li>${t}</li>`)
+        .join('');
+      return listItems ? `<ul>${listItems}</ul>` : '';
+    };
+
+    const normalizeToHtml = (text) => {
+      if (!text) return '';
+      const trimmed = text.trim();
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) return toHtmlList(parsed);
+        if (parsed && Array.isArray(parsed.bullet_points)) return toHtmlList(parsed.bullet_points);
+      } catch (_) {}
+      if (trimmed.includes('<li')) return trimmed;
+      const lines = trimmed
+        .split(/\r?\n|\u2022|\-/)
+        .map((s) => s.replace(/^\s*[-•]\s*/, '').trim())
+        .filter((s) => s.length > 0);
+      return toHtmlList(lines);
+    };
+
     const GenerateSummeryFromAI=async()=>{
-     
-      if(!resumeInfo?.Experience[index]?.title)
-      {
+      if(!resumeInfo?.Experience?.[index]?.title) {
         toast('Please Add Position Title');
         return ;
       }
       setLoading(true)
       const prompt=PROMPT.replace('{positionTitle}',resumeInfo.Experience[index].title);
-      
-      const result=await AIChatSession.sendMessage(prompt);
-      console.log(result.response.text());
-      const resp=result.response.text()
-      setValue(resp.replace('[','').replace(']',''));
-      setLoading(false);
+      try {
+        const result=await AIChatSession.sendMessage(prompt);
+        const resp=await result.response.text();
+        const html = normalizeToHtml(resp);
+        setValue(html);
+        if (typeof onRichTextEditorChange === 'function') {
+          onRichTextEditorChange({ target: { value: html } });
+        }
+      } catch (e) {
+        toast('Failed to generate summary');
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     }
   
     return (

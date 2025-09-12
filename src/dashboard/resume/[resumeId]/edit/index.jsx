@@ -17,8 +17,10 @@ function EditResume() {
 
     const GetResumeInfo=()=>{
         GlobalApi.GetResumeById(resumeId).then(resp=>{
-          console.log(resp.data.data);
-          setResumeInfo(resp.data.data);
+          const apiData = resp?.data?.data;
+          console.log(apiData);
+          const normalized = apiData?.attributes ? { id: apiData.id, ...apiData.attributes } : apiData;
+          setResumeInfo(normalized);
         })
     }
 

@@ -8,55 +8,88 @@ import GlobalApi from './../../../../service/GlobalApi'
 import { RWebShare } from 'react-web-share'
 
 function ViewResume() {
+  const [resumeInfo, setResumeInfo] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const { resumeId } = useParams()
 
-    const [resumeInfo,setResumeInfo]=useState();
-    const {resumeId}=useParams();
+  useEffect(() => {
+    GetResumeInfo()
+  }, [])
 
-    useEffect(()=>{
-        GetResumeInfo();
-    },[])
-    const GetResumeInfo=()=>{
-        GlobalApi.GetResumeById(resumeId).then(resp=>{
-            console.log(resp.data.data);
-            setResumeInfo(resp.data.data);
-        })
+  const GetResumeInfo = async () => {
+    try {
+      setLoading(true)
+      const resp = await GlobalApi.GetResumeById(resumeId)
+      const apiData = resp?.data?.data
+      console.log('Resume data:', apiData)
+      // Strapi v4 returns { data: { id, attributes: { ... } } }
+      const normalized = apiData?.attributes ? { id: apiData.id, ...apiData.attributes } : apiData
+      setResumeInfo(normalized)
+    } catch (err) {
+      console.error('Error fetching resume:', err)
+      setResumeInfo(null)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const HandleDownload=()=>{
-        window.print();
-    }
+  const HandleDownload = () => {
+    window.print()
+  }
+
+  if (loading) {
+    return (
+      <div className="text-center mt-20 text-lg text-gray-500">
+        Loading your resume...
+      </div>
+    )
+  }
+
+  if (!resumeInfo) {
+    return (
+      <div className="text-center mt-20 text-lg text-red-500">
+        Failed to load resume.
+      </div>
+    )
+  }
 
   return (
-    <ResumeInfoContext.Provider value={{resumeInfo,setResumeInfo}} >
-        <div id="no-print">
-        <Header/>
+    <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
+      {/* Header & Actions */}
+      <div id="no-print">
+        <Header />
 
-        <div className='my-10 mx-10 md:mx-20 lg:mx-36'>
-            <h2 className='text-center text-2xl font-medium'>
-                Congrats! Your Ultimate AI generates Resume is ready ! </h2>
-                <p className='text-center text-gray-400'>Now you are ready to download your resume and you can share unique 
-                    resume url with your friends and family </p>
-            <div className='flex justify-between px-44 my-10'>
-                <Button onClick={HandleDownload}>Download</Button>
-               
-                <RWebShare
-        data={{
-          text: "Hello Everyone, This is my resume please open url to see it",
-          url: import.meta.env.VITE_BASE_URL+"/my-resume/"+resumeId+"/view",
-          title: resumeInfo?.firstName+" "+resumeInfo?.lastName+" resume",
-        }}
-        onClick={() => console.log("shared successfully!")}
-      > <Button>Share</Button>
-      </RWebShare>
-            </div>
+        <div className="my-10 mx-10 md:mx-20 lg:mx-36">
+          <h2 className="text-center text-2xl font-medium">
+            Congrats! Your AI-generated Resume is ready!
+          </h2>
+          <p className="text-center text-gray-400">
+            Now you are ready to download your resume and share the unique URL with your friends and family.
+          </p>
+
+          <div className="flex justify-between px-44 my-10">
+            <Button onClick={HandleDownload}>Download</Button>
+
+            <RWebShare
+              data={{
+                text: "Hello Everyone, This is my resume please open URL to see it",
+                url: import.meta.env.VITE_BASE_URL + "/my-resume/" + resumeId + "/view",
+                title: resumeInfo.firstName + " " + resumeInfo.lastName + " resume",
+              }}
+              onClick={() => console.log("Shared successfully!")}
+            >
+              <Button>Share</Button>
+            </RWebShare>
+          </div>
         </div>
-            
+      </div>
+
+      {/* Resume Preview */}
+      <div className="my-10 px-4 md:px-6" id="print-area">
+        <div className="mx-auto w-full max-w-[800px]">
+          <ResumePreview />
         </div>
-        <div className='my-10 mx-10 md:mx-20 lg:mx-36'>
-        <div id="print-area" >
-                <ResumePreview/>
-            </div>
-            </div>
+      </div>
     </ResumeInfoContext.Provider>
   )
 }

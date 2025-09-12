@@ -15,11 +15,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
   });
   
   const generationConfig = {
-    temperature: 1,
+    temperature: 0.7,
     topP: 0.95,
     topK: 64,
-    maxOutputTokens: 8192,
-    responseMimeType: "application/json",
+    maxOutputTokens: 2048,
+    responseMimeType: "text/plain",
   };
   
   

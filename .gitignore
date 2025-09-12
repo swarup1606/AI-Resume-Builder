@@ -25,3 +25,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Package managers (keep lockfiles tracked; remove below if you prefer to commit them)
+# yarn.lock
+# pnpm-lock.yaml
+# package-lock.json
+
+# Build / caches
+build
+.cache
+.tmp
+.vite
+coverage
+
+# Strapi admin (backend) ignores
+ai-resume-admin/.env
+ai-resume-admin/.env.*
+ai-resume-admin/node_modules
+ai-resume-admin/build
+ai-resume-admin/.cache
+ai-resume-admin/.tmp
+ai-resume-admin/public/uploads/**/*
+!ai-resume-admin/public/uploads/.gitkeep
