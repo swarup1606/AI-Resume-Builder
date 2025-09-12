@@ -69,6 +69,10 @@ function Education() {
     GlobalApi.UpdateResumeDetail(params.resumeId, data).then(
       (resp) => {
         console.log(resp);
+        setResumeInfo((prev) => ({
+          ...prev,
+          education: educationalList
+        }));
         setLoading(false);
         toast('Details updated !');
       },
@@ -79,16 +83,9 @@ function Education() {
     );
   };
 
-  // ✅ Sync with context
-  useEffect(() => {
-    setResumeInfo((prev) => ({
-      ...prev,
-      education: educationalList
-    }));
-  }, [educationalList]);
 
   return (
-    <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
+    <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10 form-container">
       <h2 className="font-bold text-lg">Education</h2>
       <p>Add Your educational details</p>
 

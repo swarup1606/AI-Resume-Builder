@@ -61,6 +61,10 @@ function Skills() {
     GlobalApi.UpdateResumeDetail(resumeId, data).then(
       (resp) => {
         console.log(resp);
+        setResumeInfo((prev) => ({
+          ...prev,
+          skills: skillsList
+        }));
         setLoading(false);
         toast('Details updated !');
       },
@@ -71,13 +75,6 @@ function Skills() {
     );
   };
 
-  // ✅ Sync back to context
-  useEffect(() => {
-    setResumeInfo((prev) => ({
-      ...prev,
-      skills: skillsList
-    }));
-  }, [skillsList]);
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">

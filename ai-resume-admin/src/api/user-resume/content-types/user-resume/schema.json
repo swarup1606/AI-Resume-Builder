@@ -1,61 +1,70 @@
 {
-    "kind": "collectionType",
-    "collectionName": "user_resumes",
-    "info": {
-        "singularName": "user-resume",
-        "pluralName": "user-resumes",
-        "displayName": "User Resume",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "user_resumes",
+  "info": {
+    "singularName": "user-resume",
+    "pluralName": "user-resumes",
+    "displayName": "User Resume",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
     },
-    "options": {
-        "draftAndPublish": true
+    "resumeId": {
+      "type": "string"
     },
-    "attributes": {
-        "title": {
-            "type": "string",
-            "required": true
-        },
-        "resumeId": {
-            "type": "string"
-        },
-        "userEmail": {
-            "type": "email"
-        },
-        "userName": {
-            "type": "string"
-        },
-        "firstName": {
-            "type": "string"
-        },
-        "lastName": {
-            "type": "string"
-        },
-        "jobTitle": {
-            "type": "string"
-        },
-        "address": {
-            "type": "string"
-        },
-        "phone": {
-            "type": "string"
-        },
-        "email": {
-            "type": "string"
-        },
-        "summery": {
-            "type": "text"
-        },
-        "themeColor": {
-            "type": "string"
-        },
-        "Experience": {
-            "type": "json"
-        },
-        "education": {
-            "type": "json"
-        },
-        "skills": {
-            "type": "json"
-        }
+    "userEmail": {
+      "type": "email"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "summery": {
+      "type": "text"
+    },
+    "themeColor": {
+      "type": "string"
+    },
+    "Experience": {
+      "type": "json"
+    },
+    "education": {
+      "type": "json"
+    },
+    "skills": {
+      "type": "json"
+    },
+    "projects": {
+      "type": "json"
+    },
+    "certifications": {
+      "type": "json"
+    },
+    "interests": {
+      "type": "json"
     }
+  }
 }

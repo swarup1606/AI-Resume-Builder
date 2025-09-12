@@ -407,6 +407,7 @@ export interface ApiUserResumeUserResume extends Schema.CollectionType {
   }
   attributes: {
     address: Attribute.String
+    certifications: Attribute.JSON
     createdAt: Attribute.DateTime
     createdBy: Attribute.Relation<'api::user-resume.user-resume', 'oneToOne', 'admin::user'> &
       Attribute.Private
@@ -414,9 +415,11 @@ export interface ApiUserResumeUserResume extends Schema.CollectionType {
     email: Attribute.String
     Experience: Attribute.JSON
     firstName: Attribute.String
+    interests: Attribute.JSON
     jobTitle: Attribute.String
     lastName: Attribute.String
     phone: Attribute.String
+    projects: Attribute.JSON
     publishedAt: Attribute.DateTime
     resumeId: Attribute.String
     skills: Attribute.JSON

@@ -18,7 +18,9 @@ function PersonalDetail({enabledNext}) {
         jobTitle: '',
         address: '',
         phone: '',
-        email: ''
+        email: '',
+        github: '',
+        linkedin: ''
     });
     const [loading,setLoading]=useState(false);
     useEffect(()=>{
@@ -30,7 +32,9 @@ function PersonalDetail({enabledNext}) {
                 jobTitle: resumeInfo.jobTitle || '',
                 address: resumeInfo.address || '',
                 phone: resumeInfo.phone || '',
-                email: resumeInfo.email || ''
+                email: resumeInfo.email || '',
+                github: resumeInfo.github || '',
+                linkedin: resumeInfo.linkedin || ''
             }))
         }
     },[resumeInfo])
@@ -66,7 +70,7 @@ function PersonalDetail({enabledNext}) {
         
     }
   return (
-    <div className='p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10'>
+    <div className='p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10 form-container'>
         <h2 className='font-bold text-lg'>Personal Detail</h2>
         <p>Get Started with the basic information</p>
 
@@ -103,6 +107,20 @@ function PersonalDetail({enabledNext}) {
                     <label className='text-sm'>Email</label>
                     <Input name="email" required 
                     defaultValue={resumeInfo?.email}
+                    onChange={handleInputChange}  />
+                </div>
+                <div>
+                    <label className='text-sm'>GitHub</label>
+                    <Input name="github" 
+                    placeholder="https://github.com/username"
+                    defaultValue={resumeInfo?.github}
+                    onChange={handleInputChange}  />
+                </div>
+                <div>
+                    <label className='text-sm'>LinkedIn</label>
+                    <Input name="linkedin" 
+                    placeholder="https://linkedin.com/in/username"
+                    defaultValue={resumeInfo?.linkedin}
                     onChange={handleInputChange}  />
                 </div>
             </div>

@@ -104,6 +104,42 @@ menu {
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply text-foreground;
+        /* Light mode background - matching landing page */
+        background: linear-gradient(to bottom right, #f3e8ff, #f0f9ff, #ecfdf5);
+    }
+    .dark body {
+        /* Dark mode background - matching landing page */
+        background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);
+    }
+}
+
+@layer components {
+    /* Glowing form containers */
+    .form-container {
+        @apply transition-all duration-300;
+    }
+    .form-container:hover {
+        @apply shadow-xl;
+        box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.2);
+    }
+    .form-container:focus-within {
+        @apply shadow-2xl;
+        box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.3);
+    }
+    .dark .form-container:hover {
+        box-shadow: 0 25px 50px -12px rgba(196, 181, 253, 0.2);
+    }
+    .dark .form-container:focus-within {
+        box-shadow: 0 25px 50px -12px rgba(196, 181, 253, 0.3);
+    }
+    /* Enhanced input focus effects */
+    .input-glow:focus {
+        @apply shadow-xl ring-2 ring-violet-400 border-violet-400;
+        box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.4);
+    }
+    .dark .input-glow:focus {
+        @apply ring-violet-300 border-violet-300;
+        box-shadow: 0 25px 50px -12px rgba(196, 181, 253, 0.4);
     }
 }

@@ -6,11 +6,22 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GlobalApi from './../../../../service/GlobalApi'
 import { RWebShare } from 'react-web-share'
+import { Toaster } from '@/components/ui/sonner'
 
 function ViewResume() {
   const [resumeInfo, setResumeInfo] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [selectedTemplate, setSelectedTemplate] = useState('classic')
   const { resumeId } = useParams()
+
+  const templates = [
+    { value: 'classic', label: 'Classic' },
+    { value: 'modern', label: 'Modern' },
+    { value: 'creative', label: 'Creative' },
+    { value: 'corporate', label: 'Corporate' },
+    { value: 'executive', label: 'Executive' },
+    { value: 'professional', label: 'Professional' }
+  ]
 
   useEffect(() => {
     GetResumeInfo()
@@ -53,8 +64,11 @@ function ViewResume() {
     )
   }
 
+  // Create resumeInfo with selected template
+  const resumeInfoWithTemplate = resumeInfo ? { ...resumeInfo, template: selectedTemplate } : null
+
   return (
-    <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
+    <ResumeInfoContext.Provider value={{ resumeInfo: resumeInfoWithTemplate, setResumeInfo }}>
       {/* Header & Actions */}
       <div id="no-print">
         <Header />
@@ -64,8 +78,26 @@ function ViewResume() {
             Congrats! Your AI-generated Resume is ready!
           </h2>
           <p className="text-center text-gray-400">
-            Now you are ready to download your resume and share the unique URL with your friends and family.
+            Choose a template and download your resume or share the unique URL with your friends and family.
           </p>
+
+          {/* Template Selector */}
+          <div className="flex justify-center my-8">
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium">Choose Template:</label>
+              <select 
+                value={selectedTemplate} 
+                onChange={(e) => setSelectedTemplate(e.target.value)}
+                className="w-48 px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-violet-400 dark:focus:border-violet-300"
+              >
+                {templates.map((template) => (
+                  <option key={template.value} value={template.value}>
+                    {template.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           <div className="flex justify-between px-44 my-10">
             <Button onClick={HandleDownload}>Download</Button>
@@ -90,6 +122,8 @@ function ViewResume() {
           <ResumePreview />
         </div>
       </div>
+      
+      <Toaster />
     </ResumeInfoContext.Provider>
   )
 }
