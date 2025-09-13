@@ -9,6 +9,8 @@ import Dashboard from './dashboard/index.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import EditResume from './dashboard/resume/[resumeId]/edit/index.jsx'
 import ViewResume from './my-resume/[resumeId]/view/index.jsx'
+import ResumeEnhancerWrapper from './dashboard/resume/components/tools/resume-enhancer'
+import CareerGuidance from "./components/custom/CareerGuidance/CareerGuidance.jsx";
 import { ThemeProvider } from './context/ThemeContext'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -27,6 +29,14 @@ const router=createBrowserRouter([
       {
         path:'/dashboard/resume/:resumeId/edit',
         element:<EditResume/>
+      },
+      {
+        path:'/tools/resume-enhancer',
+        element:<ResumeEnhancerWrapper/>
+      },
+      {
+        path:'/career-guidance',
+        element:<CareerGuidance />
       },
     ]
   },

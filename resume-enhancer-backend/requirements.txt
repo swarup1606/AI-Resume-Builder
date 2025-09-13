@@ -1,0 +1,9 @@
+flask
+python-dotenv
+groq
+markdown
+python-docx
+PyPDF2
+flask-cors
+reportlab
+Pillow
