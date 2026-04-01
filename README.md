@@ -53,6 +53,8 @@ AI-Resume-Builder/
 - Python (3.8+)
 - MongoDB
 - Docker (optional)
+```
+
 ### Frontend Setup
 ```bash
 cd frontend
